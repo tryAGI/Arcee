@@ -1,0 +1,409 @@
+openapi: 3.0.3
+info:
+  title: Arcee AI API
+  version: 1.0.0
+  description: Hand-maintained OpenAPI document for Arcee AI chat completions, model discovery, and usage APIs.
+servers:
+  - url: https://api.arcee.ai/api/v1
+security:
+  - BearerAuth: []
+paths:
+  /chat/completions:
+    post:
+      operationId: createChatCompletion
+      tags:
+        - Chat
+      summary: Create a chat completion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatCompletionRequest"
+      responses:
+        "200":
+          description: Chat completion.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatCompletionResponse"
+  /models:
+    get:
+      operationId: listModels
+      tags:
+        - Models
+      summary: List models
+      responses:
+        "200":
+          description: Available models.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModelListResponse"
+  /usage/stats:
+    get:
+      operationId: getUsageStats
+      tags:
+        - Usage
+      summary: Get daily usage statistics
+      parameters:
+        - $ref: "#/components/parameters/StartDate"
+        - $ref: "#/components/parameters/EndDate"
+        - name: model
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: model_provider
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 100
+            minimum: 1
+            maximum: 1000
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: Daily usage records.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UsageStats"
+  /usage/summary:
+    get:
+      operationId: getUsageSummary
+      tags:
+        - Usage
+      summary: Get usage summary
+      parameters:
+        - $ref: "#/components/parameters/StartDate"
+        - $ref: "#/components/parameters/EndDate"
+      responses:
+        "200":
+          description: Aggregated usage summary.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsageSummary"
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Arcee API key
+  parameters:
+    StartDate:
+      name: start_date
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+    EndDate:
+      name: end_date
+      in: query
+      required: false
+      schema:
+        type: string
+        format: date-time
+  schemas:
+    ChatCompletionRequest:
+      type: object
+      additionalProperties: true
+      required:
+        - model
+        - messages
+      properties:
+        model:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Message"
+        max_tokens:
+          type: integer
+        max_completion_tokens:
+          type: integer
+        temperature:
+          type: number
+          format: float
+          maximum: 2
+        top_p:
+          type: number
+          format: float
+          maximum: 1
+        n:
+          type: integer
+          minimum: 1
+        stream:
+          type: boolean
+        stop:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+        presence_penalty:
+          type: number
+          format: float
+          minimum: -2
+          maximum: 2
+        frequency_penalty:
+          type: number
+          format: float
+          minimum: -2
+          maximum: 2
+        tools:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tool"
+        tool_choice:
+          type: string
+        response_format:
+          $ref: "#/components/schemas/ResponseFormat"
+        reasoning_effort:
+          type: string
+          enum:
+            - minimal
+            - low
+            - medium
+            - high
+    Message:
+      type: object
+      additionalProperties: true
+      required:
+        - role
+      properties:
+        role:
+          type: string
+        content:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                $ref: "#/components/schemas/ContentPart"
+        reasoning:
+          type: string
+        tool_call_id:
+          type: string
+        tool_calls:
+          type: array
+          items:
+            $ref: "#/components/schemas/ToolCall"
+    ContentPart:
+      type: object
+      additionalProperties: true
+      properties:
+        type:
+          type: string
+        text:
+          type: string
+        image_url:
+          type: object
+          additionalProperties: true
+    Tool:
+      type: object
+      additionalProperties: true
+      properties:
+        type:
+          type: string
+        function:
+          $ref: "#/components/schemas/FunctionDefinition"
+    FunctionDefinition:
+      type: object
+      additionalProperties: true
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        parameters:
+          type: object
+          additionalProperties: true
+    ToolCall:
+      type: object
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        function:
+          $ref: "#/components/schemas/FunctionCall"
+    FunctionCall:
+      type: object
+      additionalProperties: true
+      properties:
+        name:
+          type: string
+        arguments:
+          type: string
+    ResponseFormat:
+      type: object
+      additionalProperties: true
+      properties:
+        type:
+          type: string
+    ChatCompletionResponse:
+      type: object
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        created:
+          type: integer
+          format: int64
+        model:
+          type: string
+        choices:
+          type: array
+          items:
+            $ref: "#/components/schemas/Choice"
+        usage:
+          $ref: "#/components/schemas/Usage"
+    Choice:
+      type: object
+      additionalProperties: true
+      properties:
+        index:
+          type: integer
+        message:
+          $ref: "#/components/schemas/Message"
+        delta:
+          $ref: "#/components/schemas/Message"
+        finish_reason:
+          type: string
+    Usage:
+      type: object
+      additionalProperties: true
+      properties:
+        prompt_tokens:
+          type: integer
+        completion_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+    ModelListResponse:
+      type: object
+      additionalProperties: true
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ModelObject"
+    ModelObject:
+      type: object
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+        hugging_face_id:
+          type: string
+        name:
+          type: string
+        created:
+          type: integer
+          format: int64
+        input_modalities:
+          type: array
+          items:
+            type: string
+        output_modalities:
+          type: array
+          items:
+            type: string
+        context_length:
+          type: integer
+        max_output_length:
+          type: integer
+        pricing:
+          type: object
+          additionalProperties:
+            type: string
+        supported_sampling_parameters:
+          type: array
+          items:
+            type: string
+        supported_features:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+    UsageStats:
+      type: object
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        org_id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        model:
+          type: string
+        source:
+          type: string
+        input_tokens:
+          type: integer
+        output_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+        total_requests:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+    UsageSummary:
+      type: object
+      additionalProperties: true
+      properties:
+        total_input_tokens:
+          type: integer
+        total_output_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+        total_requests:
+          type: integer
+        unique_users:
+          type: integer
+        unique_models:
+          type: integer
+        unique_providers:
+          type: integer
+        api_usage:
+          type: integer
+        app_usage:
+          type: integer
+        date_range_days:
+          type: integer
