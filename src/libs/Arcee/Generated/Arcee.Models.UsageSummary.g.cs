@@ -120,5 +120,6 @@ namespace Arcee
         public UsageSummary()
         {
         }
+
     }
 }

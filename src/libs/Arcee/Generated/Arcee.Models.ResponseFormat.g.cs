@@ -39,5 +39,6 @@ namespace Arcee
         public ResponseFormat()
         {
         }
+
     }
 }

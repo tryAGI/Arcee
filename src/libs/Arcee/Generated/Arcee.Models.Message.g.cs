@@ -77,5 +77,6 @@ namespace Arcee
         public Message()
         {
         }
+
     }
 }
