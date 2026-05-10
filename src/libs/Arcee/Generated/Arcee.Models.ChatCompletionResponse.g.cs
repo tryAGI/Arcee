@@ -84,5 +84,6 @@ namespace Arcee
         public ChatCompletionResponse()
         {
         }
+
     }
 }
