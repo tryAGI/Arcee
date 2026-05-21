@@ -66,5 +66,6 @@ namespace Arcee
         public Choice()
         {
         }
+
     }
 }
