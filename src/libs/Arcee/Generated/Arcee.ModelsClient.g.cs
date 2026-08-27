@@ -10,7 +10,7 @@ namespace Arcee
     public sealed partial class ModelsClient : global::Arcee.IModelsClient, global::System.IDisposable
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const string DefaultBaseUrl = "https://api.arcee.ai/api/v1";
 
@@ -37,7 +37,7 @@ namespace Arcee
         internal global::System.Lazy<global::System.Text.Json.Serialization.JsonSerializerContext> JsonSerializerContextProvider { get; set; } = new(() => global::Arcee.SourceGenerationContext.Default);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public global::System.Text.Json.Serialization.JsonSerializerContext JsonSerializerContext
         {
