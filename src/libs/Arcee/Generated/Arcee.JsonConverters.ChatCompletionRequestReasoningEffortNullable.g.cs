@@ -20,7 +20,7 @@ namespace Arcee.JsonConverters
                     {
                         return global::Arcee.ChatCompletionRequestReasoningEffortExtensions.ToEnum(stringValue);
                     }
-                    
+
                     break;
                 }
                 case global::System.Text.Json.JsonTokenType.Number:

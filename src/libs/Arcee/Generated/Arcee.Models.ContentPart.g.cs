@@ -4,24 +4,24 @@
 namespace Arcee
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed partial class ContentPart
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("type")]
         public string? Type { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("text")]
         public string? Text { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("image_url")]
         public object? ImageUrl { get; set; }

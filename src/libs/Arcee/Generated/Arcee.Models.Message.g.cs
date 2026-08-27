@@ -4,38 +4,38 @@
 namespace Arcee
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed partial class Message
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("role")]
         [global::System.Text.Json.Serialization.JsonRequired]
         public required string Role { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("content")]
         [global::System.Text.Json.Serialization.JsonConverter(typeof(global::Arcee.JsonConverters.OneOfJsonConverter<string, global::System.Collections.Generic.IList<global::Arcee.ContentPart>>))]
         public global::Arcee.OneOf<string, global::System.Collections.Generic.IList<global::Arcee.ContentPart>>? Content { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("reasoning")]
         public string? Reasoning { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("tool_call_id")]
         public string? ToolCallId { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("tool_calls")]
         public global::System.Collections.Generic.IList<global::Arcee.ToolCall>? ToolCalls { get; set; }

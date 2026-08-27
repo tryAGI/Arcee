@@ -4,7 +4,7 @@
 namespace Arcee
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed partial class ModelObjectPricing
     {

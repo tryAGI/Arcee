@@ -11,7 +11,7 @@ namespace Arcee
     public sealed partial class ArceeClient : global::Arcee.IArceeClient, global::System.IDisposable
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public const string DefaultBaseUrl = "https://api.arcee.ai/api/v1";
 
@@ -38,7 +38,7 @@ namespace Arcee
         internal global::System.Lazy<global::System.Text.Json.Serialization.JsonSerializerContext> JsonSerializerContextProvider { get; set; } = new(() => global::Arcee.SourceGenerationContext.Default);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public global::System.Text.Json.Serialization.JsonSerializerContext JsonSerializerContext
         {
@@ -48,7 +48,7 @@ namespace Arcee
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ChatClient Chat => new ChatClient(HttpClient, baseUri: null, authorizations: Authorizations, options: Options)
         {
@@ -57,7 +57,7 @@ namespace Arcee
         };
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ModelsClient Models => new ModelsClient(HttpClient, baseUri: null, authorizations: Authorizations, options: Options)
         {
@@ -66,7 +66,7 @@ namespace Arcee
         };
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public UsageClient Usage => new UsageClient(HttpClient, baseUri: null, authorizations: Authorizations, options: Options)
         {
